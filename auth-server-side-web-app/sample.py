@@ -1,4 +1,5 @@
 #!python3
+"""Authorization sample, as Server-side Web Application."""
 import sys
 import argparse
 import requests
@@ -9,6 +10,7 @@ from os.path import dirname, join, abspath
 sys.path.insert(0, abspath(join(dirname(__file__), '..', 'common')))
 from panopto_oauth2 import PanoptoOAuth2
 
+
 def parse_argument():
     parser = argparse.ArgumentParser(description='Sample of Authorization as Server-side Web Application')
     parser.add_argument('--server', dest='server', required=True, help='Server name as FQDN')
@@ -17,7 +19,9 @@ def parse_argument():
     parser.add_argument('--skip-verify', dest='skip_verify', action='store_true', required=False, help='Skip SSL certificate verification. (Never apply to the production code)')
     return parser.parse_args()
 
+
 def main():
+    """First function called from command line."""
     args = parse_argument()
 
     if args.skip_verify:
@@ -28,7 +32,7 @@ def main():
     # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
     requests_session = requests.Session()
     requests_session.verify = not args.skip_verify
-    
+
     # Load OAuth2 logic
     oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
 
@@ -47,7 +51,7 @@ def main():
             # Re-try now
             continue
         data = resp.json() # parse JSON format response
-        for folder in data:
+        for folder in data["Results"]:
             print('  {0}: {1}'.format(folder['Id'], folder['Name']))
         time.sleep(60)
 
@@ -66,13 +70,14 @@ def inspect_response_is_unauthorized(response):
     if response.status_code // 100 == 2:
         # Success on 2xx response.
         return False
-        
+
     if response.status_code == requests.codes.unauthorized:
         print('Unauthorized. Access token is invalid.')
         return True
 
     # Throw unhandled cases.
     response.raise_for_status()
+
 
 if __name__ == '__main__':
     main()
