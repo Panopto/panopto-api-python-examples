@@ -49,7 +49,9 @@ def main():
             # Re-try now
             continue
         data = resp.json() # parse JSON format response
-        for folder in data:
+        results = data['Results']
+        print(results)
+        for folder in results:
             print('  {0}: {1}'.format(folder['Id'], folder['Name']))
         time.sleep(60)
 
