@@ -57,7 +57,6 @@ class PanoptoOAuth2():
         # Then, fallback to the full autorization path. Offline access scope is needed to get refresh token.
         scope = list(DEFAULT_SCOPE) + ['offline_access']
         session = OAuth2Session(self.client_id, scope = scope, redirect_uri = REDIRECT_URL)
-        session.verify = self.ssl_verify
         
         # Open the authorization page by the browser.
         authorization_url, state = session.authorization_url(self.authorization_endpoint)
@@ -78,7 +77,7 @@ class PanoptoOAuth2():
 
         print()
         print('Get a new access token with authorization code, which is provided as return path: {0}'.format(redirected_path))
-        session.fetch_token(self.access_token_endpoint, client_secret = self.client_secret, authorization_response = redirected_path)
+        session.fetch_token(self.access_token_endpoint, client_secret = self.client_secret, authorization_response = redirected_path, verify=self.ssl_verify)
         self.__save_token_to_cache(session.token)
 
         return session.token['access_token']
@@ -97,12 +96,11 @@ class PanoptoOAuth2():
                 token = pickle.load(fr)
 
             session = OAuth2Session(self.client_id, token = token)
-            session.verify = self.ssl_verify
 
             print()
             print('Get a new access token by using saved refresh token.')
             extra = {'client_id': self.client_id, 'client_secret': self.client_secret}
-            session.refresh_token(self.access_token_endpoint, **extra)
+            session.refresh_token(self.access_token_endpoint, verify=self.ssl_verify, **extra)
             self.__save_token_to_cache(session.token)
 
             return session.token['access_token']
@@ -127,7 +125,6 @@ class PanoptoOAuth2():
         Get OAuth2 access token by Resource Owner Grant (User Based Server Application).
         '''
         session = OAuth2Session(client = LegacyApplicationClient(client_id = self.client_id))
-        session.verify = self.ssl_verify
 
         # Retrieve access token
         print()
@@ -136,7 +133,7 @@ class PanoptoOAuth2():
         session.fetch_token(
             token_url = self.access_token_endpoint, scope = scope,
             client_id = self.client_id, client_secret = self.client_secret,
-            username = username, password = password)
+            username = username, password = password, verify=self.ssl_verify)
 
         print('OAuth2 flow provided the token below.')
         pprint.pprint(session.token, indent = 4)
