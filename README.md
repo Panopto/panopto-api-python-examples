@@ -17,6 +17,13 @@ Those samples do not necessarily implement complete error handling or retry logi
 It is useful to capture the actual network traffic with a capture tool, like [Fiddler on Windows](https://www.telerik.com/fiddler) or [Charles on Mac](https://www.charlesproxy.com/), and examine it.
 The samples in repository generally accept ```--skip-verify``` option for that purpose, so that they ignore the SSL certificate replaced by such tool and continue to run.
 
+### An issue with urllib3
+This method does not work with the latest Python urllib3 library as of 2022-07-09, version `1.26.10`. 
+As a workaround, you may install the older version of urllib3 by the following commandline.
+```
+pip install --upgrade urllib3==1.25.11
+```
+
 ## References
 - [Panopto Public API documentation](https://demo.hosted.panopto.com/Panopto/api/docs/index.html)
 - Panopto support document: [Create OAuth2 Clients](https://support.panopto.com/s/article/oauth2-client-setup)
