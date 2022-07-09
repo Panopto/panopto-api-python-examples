@@ -14,6 +14,7 @@ Most of authorization logic is in common code: [panopto_oauth2.py](../common/pan
 ```
 pip install requests oauthlib requests_oauthlib
 ```
+4. Follow [this workaround](../README.md#An-issue-with-urllib3) as needed.
 
 ## Setup ID provider
 Setup a new ID provider or pick an existing ID provider, and record its application ID.

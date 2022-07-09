@@ -12,6 +12,7 @@ Most of authorization logic is in common code: [panopto_oauth2.py](../common/pan
 ```
 pip install requests oauthlib requests_oauthlib
 ```
+4. Follow [this workaround](../README.md#An-issue-with-urllib3) as needed.
 
 ## Setup API Client on Panopto server
 1. Sign in to the Panopto web site

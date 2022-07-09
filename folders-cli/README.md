@@ -8,6 +8,7 @@ This sample demonstrates the usage of the Folders API.
 ```
 pip install requests oauthlib requests_oauthlib
 ```
+4. Follow [this workaround](../README.md#An-issue-with-urllib3) as needed.
 
 ## Setup API Client on Panopto server
 See the instruction for [Authorization as Server-side Web Application](../auth-server-side-web-app/README.md)
